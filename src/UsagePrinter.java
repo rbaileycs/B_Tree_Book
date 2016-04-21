@@ -3,7 +3,7 @@ public class UsagePrinter {
     /**
      * This method displays error messages for the different classes. This approach is
      * being used to cut down on unnecessary code in the main classes.
-     * @param n
+     * @param n determines which code to display
      */
     static void errorMessage(int n) {
         switch (n) {

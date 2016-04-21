@@ -1,20 +1,32 @@
 import java.util.Arrays;
 
+/**
+ *BTree class is the 'container' class for the Node class.
+ *
+ * TODO: Move manipulation code into Node
+ *
+ * @author Ryan Bailey
+ */
 public class BTree {
 
+    /**
+     * Node class is the manipulator class for the nodes
+     * stored in BTree.
+     *
+     * @author Ryan Bailey
+     */
     private class Node{
-        //			When a BTreeNode is full, it equals one disk block
-        //			Keep three nodes in memory
-
-        //			Frequency and key array max sizes are 2t*1, where t is order.
-        //			File offset for children max size is 2t, where t is order.
-        //			File offset is where the node begins in memory.
 
         protected int numOfKeys, kidCount;
         protected long key[], freq[];
         protected Node parent, child[];
         protected boolean isALeaf;
 
+        /**
+         *Node constructor
+         *
+         * @param parent the parent node of the new node
+         */
         public Node(Node parent){
 
             kidCount = 0;
@@ -26,8 +38,9 @@ public class BTree {
 
         /**
          * This function returns the ith child of a node
-         * @param index
-         * @return
+         *
+         * @param index index for child we want returned
+         * @return child at ith index
          */
         public Node getChild(int index){
 
@@ -46,15 +59,16 @@ public class BTree {
         //		}
     }
 
-    /*
-     * Beginning of BTree class logic
+    /**
+     * BTree variables
      */
     private Node root;
     private int order; //Degree of the BTree
 
     /**
      * Constructor for the BTree
-     * @param order
+     *
+     * @param order order/degree of tree. AKA 't'
      */
     public BTree(int order){
 
@@ -62,14 +76,14 @@ public class BTree {
         root = new Node(null);
         root.isALeaf = true;
         root.numOfKeys = 0;
-        //root.write();
     }
 
     /**
-     * This function searches through the BTree for a certain sequence value. It returns a node
-     * if the value is found
-     * @param root
-     * @param key
+     * This function searches through the BTree for a certain sequence value.
+     * It returns a node if the value is found
+     *
+     * @param root root node of tree
+     * @param key key being searched for
      * @return
      */
     public Node search(Node root, long key){
@@ -90,9 +104,17 @@ public class BTree {
         }
     }
 
-    /*
-     *insert at a leaf
-     *keys are sorted in the nodes
+    /**
+     * This function takes in a node and an index on which to split
+     * the node. It creates a new node that will serve as the 'right'
+     * child and pushes the median value in the node to be split
+     * to it's parent node, and then takes the values from (m/2)+1
+     * (where 'm' is the median number's index) and puts them in
+     * the right child. The left child is the old root, as set in
+     * insert.
+     *
+     * @param parent parent that will take the median value
+     * @param index the index for the split
      */
     public void split(Node parent, int index) {
 
@@ -141,6 +163,14 @@ public class BTree {
 //        parent.write();
     }
 
+    /**
+     * Insert determines if a node being inserted into
+     * is full or not. If the node (in this case being root)
+     * is full, split. If not, insert into the node.
+     *
+     * @param t the tree containing the nodes to insert into
+     * @param key the key being inserted
+     */
     public void insert(BTree t, long key) {
 
         Node root = t.root;
@@ -159,6 +189,14 @@ public class BTree {
         }
     }
 
+    /**
+     * InsertNonFull inserts the key into the node. It finds the proper
+     * spot and adjusts the keys in the node (if any) accordingly. If the
+     * node being inserted into is full, split.
+     *
+     * @param node node being inserted into
+     * @param key key being inserted
+     */
     public void insertNonFull(Node node, long key) {
 
         int i = node.numOfKeys;
@@ -176,8 +214,6 @@ public class BTree {
             // System.out.println(Arrays.toString(node.key));
             // x.write();
         } else {
-
-            //int i = 0;
 
             while(i < node.numOfKeys && key > node.key[i]){
                 i++;
