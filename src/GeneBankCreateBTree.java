@@ -11,10 +11,8 @@ public class GeneBankCreateBTree {
         }
 
         File file = new File(args[0]);
-        FileParser parse = new FileParser(file, 3, 8);
+        FileParser parse = new FileParser(file, 3, 3);
         parse.parseFromOriginToKey();
-
-
 
     }
 

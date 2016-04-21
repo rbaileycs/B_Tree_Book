@@ -125,12 +125,16 @@ public class BTree {
         parent.key[index] = y.key[order - 1];
         y.key[order - 1] = 0;
 
-        for(int j = 0; j < order - 1; j++)
+        for(int j = 0; j < order; j++)
         {
-            y.key[j + order] = 0; //'delete' old values
+            y.key[j + order - 1] = 0; //'delete' old values
         }
 
         parent.numOfKeys++;
+
+        System.out.println("PARENT: " + Arrays.toString(parent.key));
+        System.out.println("LEFT: " + Arrays.toString(y.key));
+        System.out.println("RIGHT: " + Arrays.toString(z.key));
 
 //        y.write();
 //        z.write();
@@ -166,7 +170,10 @@ public class BTree {
             }
             node.key[i] = key;
             node.numOfKeys++;
-            System.out.println(Arrays.toString(node.key));
+            System.out.println("Inserting Key: " + key);
+            if(node.numOfKeys == (2*order)-1)
+                System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
+           // System.out.println(Arrays.toString(node.key));
            // x.write();
         } else {
 
