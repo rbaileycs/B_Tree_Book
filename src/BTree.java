@@ -17,20 +17,21 @@ public class BTree {
      */
     private class Node{
 
-        protected int numOfKeys, kidCount;
-        protected long key[], freq[];
-        protected Node parent, child[];
+        protected int numOfKeys;
+        final int kidCount;
+        protected final long[] key;
+        protected final long[] freq;
+        protected final Node parent;
+        protected final Node[] child;
         protected boolean isALeaf;
 
         /**
          *Node constructor
-         *
-         * @param parent the parent node of the new node
          */
-        public Node(Node parent){
+        public Node(){
 
             kidCount = 0;
-            this.parent = parent;
+            this.parent = null;
             key = new long[(2*order)-1];
             child = new Node[2*order];
             freq = new long[2*order-1];
@@ -63,7 +64,7 @@ public class BTree {
      * BTree variables
      */
     private Node root;
-    private int order; //Degree of the BTree
+    private final int order; //Degree of the BTree
 
     /**
      * Constructor for the BTree
@@ -73,7 +74,7 @@ public class BTree {
     public BTree(int order){
 
         this.order = order;
-        root = new Node(null);
+        root = new Node();
         root.isALeaf = true;
         root.numOfKeys = 0;
     }
@@ -84,9 +85,9 @@ public class BTree {
      *
      * @param root root node of tree
      * @param key key being searched for
-     * @return
+     * @return something
      */
-    public Node search(Node root, long key){
+    private Node search(Node root, long key){
 
         int i = 0;
 
@@ -116,9 +117,9 @@ public class BTree {
      * @param parent parent that will take the median value
      * @param index the index for the split
      */
-    public void split(Node parent, int index) {
+    private void split(Node parent, int index) {
 
-        Node z = new Node(null);//changed from index to order
+        Node z = new Node();//changed from index to order
         Node y = parent.getChild(index);
 
         z.isALeaf = y.isALeaf;
@@ -176,7 +177,7 @@ public class BTree {
         Node root = t.root;
 
         if (root.numOfKeys == (2 * order) - 1) {
-            Node s = new Node(null);
+            Node s = new Node();
             t.root = s;
             s.isALeaf = false;
             s.numOfKeys = 0;
@@ -197,7 +198,7 @@ public class BTree {
      * @param node node being inserted into
      * @param key key being inserted
      */
-    public void insertNonFull(Node node, long key) {
+    private void insertNonFull(Node node, long key) {
 
         int i = node.numOfKeys;
 
@@ -211,7 +212,6 @@ public class BTree {
             System.out.println("Inserting Key: " + key);
             if(node.numOfKeys == (2*order)-1)
                 System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
-            // System.out.println(Arrays.toString(node.key));
             // x.write();
         } else {
 
