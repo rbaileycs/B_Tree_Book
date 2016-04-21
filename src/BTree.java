@@ -150,8 +150,8 @@ public class BTree {
             t.root = s;
             s.isALeaf = false;
             s.numOfKeys = 0;
-            s.child[0] = root; // changed from 1 to 0
-            split(s, 0); //changed to 0 from 1
+            s.child[0] = root;
+            split(s, 0);
             insertNonFull(s, key);
         }
         else {
@@ -173,24 +173,22 @@ public class BTree {
             System.out.println("Inserting Key: " + key);
             if(node.numOfKeys == (2*order)-1)
                 System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
-           // System.out.println(Arrays.toString(node.key));
-           // x.write();
+            // System.out.println(Arrays.toString(node.key));
+            // x.write();
         } else {
 
-            int j = 0;
+            //int i = 0;
 
-            while(j < node.numOfKeys && key > node.key[j]){
-                j++;
+            while(i < node.numOfKeys && key > node.key[i]){
+                i++;
             }
-            if(node.child[j].numOfKeys == (order * 2) - 1){
-                split(node, j);
-                if(key > node.key[j]){
-                    j++;
+            if(node.child[i].numOfKeys == (order * 2) - 1){
+                split(node, i);
+                if(key > node.key[i]){
+                    i++;
                 }
             }
-            insertNonFull(node.child[j],key);
+            insertNonFull(node.child[i],key);
         }
     }
 }
-
-
