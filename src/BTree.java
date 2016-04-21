@@ -17,10 +17,8 @@ public class BTree {
      */
     private class Node{
 
-        protected int numOfKeys;
-        final int kidCount;
-        protected final long[] key;
-        protected final long[] freq;
+        protected int numOfKeys, kidCount;
+        protected final long[] key, freq;
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
@@ -32,9 +30,9 @@ public class BTree {
 
             kidCount = 0;
             this.parent = null;
-            key = new long[(2*order)-1];
-            child = new Node[2*order];
-            freq = new long[2*order-1];
+            child = new Node[2 * order];
+            key = new long[(2 * order) - 1];
+            freq = new long[(2 * order) - 1];
         }
 
         /**
@@ -210,7 +208,7 @@ public class BTree {
             node.key[i] = key;
             node.numOfKeys++;
             System.out.println("Inserting Key: " + key);
-            if(node.numOfKeys == (2*order)-1)
+            if(node.numOfKeys == (2 * order) - 1)
                 System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
             // x.write();
         } else {
