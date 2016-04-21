@@ -119,7 +119,7 @@ public class BTree {
         }
         parent.child[index + 1] = z;
 
-        for(int j = parent.numOfKeys - 1; j > index; j--) {
+        for(int j = parent.numOfKeys - 1; j >= index; j--) {
             parent.key[j + 1] = parent.key[j];
         }
         parent.key[index] = y.key[order - 1];
