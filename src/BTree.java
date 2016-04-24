@@ -50,7 +50,7 @@ public class BTree {
         void write(){
             //writes out contents to specific block on disk
         }
-        void read(){
+        void read(Node node){
             //reads contents form specific block on disk
         }
         //		void generateFileOffset(){
@@ -81,25 +81,25 @@ public class BTree {
      * This function searches through the BTree for a certain sequence value.
      * It returns a node if the value is found
      *
-     * @param root root node of tree
+     * @param node root node of tree
      * @param key key being searched for
      * @return something
      */
-    private Node search(Node root, long key){
+    private long search(Node node, long key){
 
         int i = 0;
 
-        while(i < root.numOfKeys && key > root.key[i]){
+        while(i < node.numOfKeys && key > node.key[i]){
             i++;
         }
-        if(i <= root.numOfKeys && key == root.key[i]){
-            return root;
+        if(i < node.numOfKeys && key == node.key[i]){
+            return node.key[i];
         }
-        if(root.isALeaf){
-            return null;
-        }
-        else{
-            return search(root.getChild(i),key);
+        else if(node.isALeaf){
+            return 0;
+        } else {
+            //node.read(node.child[i]);
+            return search(node.child[i], key);
         }
     }
 
@@ -141,7 +141,7 @@ public class BTree {
         parent.child[index + 1] = z;
 
         for(int j = parent.numOfKeys - 1; j >= index; j--) {
-            parent.key[j + 1] = parent.key[j];
+            parent.key[j+1] = parent.key[j];
         }
         parent.key[index] = y.key[order - 1];
         y.key[order - 1] = 0;
@@ -198,13 +198,19 @@ public class BTree {
      */
     private void insertNonFull(Node node, long key) {
 
+        if(search(node, key) != 0){
+            System.out.println("BOO!");
+            return;
+        }
         int i = node.numOfKeys;
 
         if (node.isALeaf) {
+
             while(i >= 1 && key < node.key[i - 1] ) {
                 node.key[i] = node.key[i - 1];
                 i--;
             }
+
             node.key[i] = key;
             node.numOfKeys++;
             System.out.println("Inserting Key: " + key);
@@ -213,16 +219,18 @@ public class BTree {
             // x.write();
         } else {
 
-            while(i < node.numOfKeys && key > node.key[i]){
-                i++;
+            int j = 0;
+
+            while(j < node.numOfKeys && key > node.key[j]){
+                j++;
             }
-            if(node.child[i].numOfKeys == (order * 2) - 1){
-                split(node, i);
-                if(key > node.key[i]){
-                    i++;
+            if(node.child[j].numOfKeys == (order * 2) - 1){
+                split(node, j);
+                if(key > node.key[j]){
+                    j++;
                 }
             }
-            insertNonFull(node.child[i],key);
+            insertNonFull(node.child[j],key);
         }
     }
 }
