@@ -1,5 +1,7 @@
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
-
+import java.util.Hashtable;
 /**
  *BTree class is the 'container' class for the Node class.
  *
@@ -22,6 +24,7 @@ public class BTree {
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
+
 
         /**
          *Node constructor
@@ -51,11 +54,17 @@ public class BTree {
             //writes out contents to specific block on disk
         }
         void read(Node node){
-            //reads contents form specific block on disk
+
+
+            //reads contents from specific block on disk
         }
-        //		void generateFileOffset(){
-        //
-        //		}
+
+		void generateFileOffset(){
+
+		}
+
+
+
     }
 
     /**
@@ -63,14 +72,17 @@ public class BTree {
      */
     private Node root;
     private final int order; //Degree of the BTree
+    int frequency = 0; // temp?
+    int subLength;
+
 
     /**
      * Constructor for the BTree
      *
      * @param order order/degree of tree. AKA 't'
      */
-    public BTree(int order){
-
+    public BTree(int order, int subLength){
+        this.subLength = subLength;
         this.order = order;
         root = new Node();
         root.isALeaf = true;
@@ -85,23 +97,23 @@ public class BTree {
      * @param key key being searched for
      * @return something
      */
-    private long search(Node node, long key){
-
+    public Node search(Node node, long key) {
         int i = 0;
-
-        while(i < node.numOfKeys && key > node.key[i]){
+        //System.out.println("DUPKEY: " + key);
+        while (i < node.numOfKeys && key > node.key[i]) {
             i++;
         }
-        if(i < node.numOfKeys && key == node.key[i]){
-            return node.key[i];
+        if (i < node.numOfKeys && key == node.key[i]) {
+            return node;
         }
-        else if(node.isALeaf){
-            return 0;
+        if (node.isALeaf) {
+            return null;
+
         } else {
-            //node.read(node.child[i]);
-            return search(node.child[i], key);
+            return search(node.getChild(i), key);
         }
     }
+
 
     /**
      * This function takes in a node and an index on which to split
@@ -198,15 +210,23 @@ public class BTree {
      */
     private void insertNonFull(Node node, long key) {
 
-        if(search(node, key) != 0){
-            System.out.println("BOO!");
+
+
+        //checks for duplicates
+        if(search(node, key) != null){
+            for(int i = 0; i < node.freq.length; i++){
+                int insertNum = ((int)(key%node.freq.length)+i)%node.freq.length;
+                if(i == insertNum) {
+                    node.freq[insertNum]++;
+                }
+            }
             return;
         }
         int i = node.numOfKeys;
 
         if (node.isALeaf) {
 
-            while(i >= 1 && key < node.key[i - 1] ) {
+            while(i >= 1 && key < node.key[i -1] ) {
                 node.key[i] = node.key[i - 1];
                 i--;
             }
@@ -233,4 +253,33 @@ public class BTree {
             insertNonFull(node.child[j],key);
         }
     }
+
+
+//    /**
+//     * This function contains the necessary equations required
+//     * to compute hash functions. It is specifically for using the
+//     * hash functions needed to create the hash table.
+//     * @param key key to be inserted
+//     * @param hashcount
+//     * @return
+//     */
+//    public long hashFunc(Object key, Node node, int i)
+//    {
+//
+//        int hashKey = Math.abs(key.hashCode());
+//        int primaryFunc = Math.abs(hashKey % node.freq.length);
+//        //int secondaryFunc = Math.abs(1 + (hashKey % (node.freq.length - 2)));
+//
+//            //Double Hashing Algorithm: h(k) = ((h1(k) + i ∗ h2(k)) mod m)
+//            long finalValue = Math.abs((primaryFunc + node.freq[i] * secondaryFunc) % node.freq.length);
+//
+//        return finalValue;
+//        }
+
+//
+//
+//    public void increaseFreq(){
+//        frequency++;
+//    }
+
 }
