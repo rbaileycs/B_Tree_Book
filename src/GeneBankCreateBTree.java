@@ -13,7 +13,18 @@ import java.io.FileNotFoundException;
 
 public class GeneBankCreateBTree {
 
+    /**
+     * The main class for creating BTree
+     * @param args command line arguments being passed in
+     * @throws FileNotFoundException exception for files not found
+     */
     public static void main(String[] args) throws FileNotFoundException {
+
+        /**
+         * Proper usage for this program:
+         *
+         * java GeneBankCreateBTree <degree> <gbk file> <sequence length> [<debug level>]
+         */
 
         int degree = 0; //degree of BTree. Should be 2 or greater.
         int sequenceLength; //Size of subsequences. Should be between 1 and 31.
