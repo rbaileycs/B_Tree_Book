@@ -27,7 +27,7 @@ public class UsagePrinter {
                         + "\t   The dump file contains frequency and DNA string (corresponding to the key stored) in an inorder traversal.");
 
             case 2: //Error message if substring length is not correct
-                System.out.println("Substring length must be between 0 and 31.");
+                System.out.println("Substring length must be between 1 and 31.");
 
             case 3: //Error message if degree is less than 2
                 System.out.println("The degree value must be greater than 2");
