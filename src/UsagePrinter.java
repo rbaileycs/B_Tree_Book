@@ -1,4 +1,10 @@
-
+/**
+ * This class is meant to contain error messages for instances when the
+ * command line arguments aren't correct.
+ * ALL ERROR MESSAGES ARE TO BE WRITTEN HERE
+ *
+ * @author Ryan Bailey
+ */
 public class UsagePrinter {
     /**
      * This method displays error messages for the different classes. This approach is

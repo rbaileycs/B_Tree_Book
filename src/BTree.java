@@ -45,6 +45,7 @@ public class BTree {
 
         //How to handle read/writes of nodes. fseek /Random Access File /Seek file option
         void write(){
+
             //writes out contents to specific block on disk
         }
 
@@ -59,9 +60,8 @@ public class BTree {
      * BTree variables
      */
     private Node root;
-    private final int order; //Degree of the BTree
-    int frequency = 0; // temp?
-    private long[] freq = new long[(int)Math.pow(31,4)];
+    private final int order; //Degree of the BTree (t)
+    private long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
 
 
     /**
@@ -70,6 +70,7 @@ public class BTree {
      * @param order order/degree of tree. AKA 't'
      */
     public BTree(int order){
+
         this.order = order;
         root = new Node();
         root.isALeaf = true;
