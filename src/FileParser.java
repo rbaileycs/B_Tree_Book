@@ -48,14 +48,19 @@ public class FileParser {
         while(scan.hasNext()){
             if(scan.next().equalsIgnoreCase("ORIGIN")){
                 while(scan.hasNext()){
+                    //Replace any non-char with whitespace
                     String word = scan.next().replaceAll("[\\d]+", "");
+                    //Exit key breaks out of while loop
                     if (word.equalsIgnoreCase("//")){
                         break;
                     }
+                    //The final gene sequence string
                     longString  = longString + word;
                 }
+                // Splits longString into substrings
                 while(i+(this.k-1) <= longString.length()){
                     String subber = longString.substring(i, i + (this.k - 1));
+                    //Skips any n characters in the sequence
                     if(subber.contains("n")){
                         i++;
                     }else{
