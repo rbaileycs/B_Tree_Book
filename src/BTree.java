@@ -20,7 +20,7 @@ public class BTree {
     private class Node{
 
         protected int numOfKeys, kidCount;
-        protected final long[] key, freq;
+        protected final long[] key;
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
@@ -35,7 +35,6 @@ public class BTree {
             this.parent = null;
             child = new Node[2 * order];
             key = new long[(2 * order) - 1];
-            freq = new long[(2 * order) - 1];
         }
 
         /**
@@ -53,18 +52,12 @@ public class BTree {
         void write(){
             //writes out contents to specific block on disk
         }
+
         void read(Node node){
 
 
             //reads contents from specific block on disk
         }
-
-		void generateFileOffset(){
-
-		}
-
-
-
     }
 
     /**
@@ -73,7 +66,7 @@ public class BTree {
     private Node root;
     private final int order; //Degree of the BTree
     int frequency = 0; // temp?
-    int subLength;
+    private long[] freq = new long[(int)Math.pow(31,4)];
 
 
     /**
@@ -81,8 +74,7 @@ public class BTree {
      *
      * @param order order/degree of tree. AKA 't'
      */
-    public BTree(int order, int subLength){
-        this.subLength = subLength;
+    public BTree(int order){
         this.order = order;
         root = new Node();
         root.isALeaf = true;
@@ -209,13 +201,19 @@ public class BTree {
      * @param key key being inserted
      */
     private void insertNonFull(Node node, long key) {
-
-        //checks for duplicates
-        if(search(node, key) != null){
-            int insertNum = (((int)(key % node.freq.length) + (int)key) % node.freq.length);
-            node.freq[insertNum]++;
+        System.out.println("Inserting Key: " + key);
+        /**
+         * Checks for duplicates
+         * Uses linear probing
+         */
+        if(search(root, key) != null){
+            long insertKey = hashFunc(key, root);
+            freq[(int)insertKey]++;
+            System.out.println("KEY: " + key);
+            System.out.println("FREQ: " +  freq[(int)insertKey]);
             return;
         }
+
         int i = node.numOfKeys;
 
         if (node.isALeaf) {
@@ -227,7 +225,7 @@ public class BTree {
 
             node.key[i] = key;
             node.numOfKeys++;
-            System.out.println("Inserting Key: " + key);
+
             if(node.numOfKeys == (2 * order) - 1)
                 System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
             // x.write();
@@ -249,26 +247,18 @@ public class BTree {
     }
 
 
-//    /**
-//     * This function contains the necessary equations required
-//     * to compute hash functions. It is specifically for using the
-//     * hash functions needed to create the hash table.
-//     * @param key key to be inserted
-//     * @param hashcount
-//     * @return
-//     */
-//    public long hashFunc(Object key, Node node, int i)
-//    {
-//
-//        int hashKey = Math.abs(key.hashCode());
-//        int primaryFunc = Math.abs(hashKey % node.freq.length);
-//        //int secondaryFunc = Math.abs(1 + (hashKey % (node.freq.length - 2)));
-//
-//            //Double Hashing Algorithm: h(k) = ((h1(k) + i ∗ h2(k)) mod m)
-//            long finalValue = Math.abs((primaryFunc + node.freq[i] * secondaryFunc) % node.freq.length);
-//
-//        return finalValue;
-//        }
+    /**
+     * This function contains the necessary equations required
+     * to compute hash functions. It is specifically for using the
+     * hash functions needed to create the hash table.
+     * @param key key to be inserted
+     * @param node node object for using frequency array
+     * @return hashvalue for key
+     */
+    public long hashFunc(long key, Node node)
+    {
+        return (((key % freq.length) + key) % freq.length);
+    }
 
 //
 //

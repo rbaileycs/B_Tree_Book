@@ -32,7 +32,7 @@ public class FileParser {
 
         this.f = newFile;
         this.k = subStringSize;
-        newTree = new BTree(order, subStringSize);
+        newTree = new BTree(order);
     }
 
     /**
