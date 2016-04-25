@@ -28,11 +28,15 @@
             Reads in the root node when the program starts. Not sure of the purpose.
             Again, reference spec sheet for info.
 
+         Implement Cache:
+            Self-Explanatory
+
      #QUERY CLASS:
             This class chould reference BTree and be able to see how many times
             any subsequece has happened.
 
      #OPTIONAL!!
+     ------------
      #toString function: GeneConverter Class
             This function should be able to convert the binary strings created in toLong to
             regular characters. ###LAST!!!
