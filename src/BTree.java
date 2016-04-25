@@ -210,16 +210,10 @@ public class BTree {
      */
     private void insertNonFull(Node node, long key) {
 
-
-
         //checks for duplicates
         if(search(node, key) != null){
-            for(int i = 0; i < node.freq.length; i++){
-                int insertNum = ((int)(key%node.freq.length)+i)%node.freq.length;
-                if(i == insertNum) {
-                    node.freq[insertNum]++;
-                }
-            }
+            int insertNum = (((int)(key % node.freq.length) + (int)key) % node.freq.length);
+            node.freq[insertNum]++;
             return;
         }
         int i = node.numOfKeys;
