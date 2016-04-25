@@ -17,7 +17,7 @@
 
 ###Sources Used
 
-###TODO
+###TODO:
 
     #BTREE CLASS
          Write function:
@@ -37,5 +37,5 @@
             This function should be able to convert the binary strings created in toLong to
             regular characters. ###LAST!!!
 
-     ANYTHING ELSE THAT NEEDS TO BE DONE DHOULD BE ADDED TO THIS README!! MAKE NOTES AS TASKS ARE COMPLETED.
+     ANYTHING ELSE THAT NEEDS TO BE DONE SHOULD BE ADDED TO THIS README!! MAKE NOTES AS TASKS ARE COMPLETED.
 
