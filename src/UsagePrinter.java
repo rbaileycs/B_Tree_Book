@@ -13,7 +13,7 @@ public class UsagePrinter {
      */
     static void errorMessage(int n) {
         switch (n) {
-            case 1: //Error message display for GeneBankCreateBTree.java
+            case 1: //Main error message display for GeneBankCreateBTree.java
                 System.out.println("To use this program, please enter the following arguments:\n\n"
                         + "\tjava GeneBankCreateBTree <degree> <gbk file> <sequence length> [<debug level>]\n\n"
                         + "degree: The degree for the BTree\n"
@@ -25,6 +25,15 @@ public class UsagePrinter {
                         + "\t1: The program writes a text file named dump, that has the following line format:\n"
                         + "\t\t<frequency> <DNA string>.\n"
                         + "\t   The dump file contains frequency and DNA string (corresponding to the key stored) in an inorder traversal.");
+
+            case 2: //Error message if substring length is not correct
+                System.out.println("Substring length must be between 0 and 31.");
+
+            case 3: //Error message if degree is less than 2
+                System.out.println("The degree value must be greater than 2");
+
+            case 4: //Error message if file is not found
+                System.out.println("The file cannot be found.");
         }
     }
 }

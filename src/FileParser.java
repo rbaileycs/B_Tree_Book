@@ -28,7 +28,7 @@ public class FileParser {
      * @param subStringSize size of substrings
      * @param order degree of the BTree
      */
-    public FileParser(File newFile, int subStringSize, int order){
+    public FileParser(int order, File newFile, int subStringSize){
 
         this.f = newFile;
         this.k = subStringSize;
