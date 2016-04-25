@@ -1,11 +1,7 @@
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
-import java.util.Hashtable;
+
 /**
  *BTree class is the 'container' class for the Node class.
- *
- * TODO: Move manipulation code into Node
  *
  * @author Ryan Bailey
  */
@@ -19,7 +15,7 @@ public class BTree {
      */
     private class Node{
 
-        protected int numOfKeys, kidCount;
+        protected int numOfKeys;
         protected final long[] key;
         protected final Node parent;
         protected final Node[] child;
@@ -31,7 +27,6 @@ public class BTree {
          */
         public Node(){
 
-            kidCount = 0;
             this.parent = null;
             child = new Node[2 * order];
             key = new long[(2 * order) - 1];
@@ -105,7 +100,6 @@ public class BTree {
             return search(node.getChild(i), key);
         }
     }
-
 
     /**
      * This function takes in a node and an index on which to split
@@ -246,11 +240,9 @@ public class BTree {
         }
     }
 
-
     /**
-     * This function contains the necessary equations required
-     * to compute hash functions. It is specifically for using the
-     * hash functions needed to create the hash table.
+     * This function contains the hash function needed to increase
+     * the frequency count for keys that are duplicates.
      * @param key key to be inserted
      * @param node node object for using frequency array
      * @return hashvalue for key
@@ -259,11 +251,4 @@ public class BTree {
     {
         return (((key % freq.length) + key) % freq.length);
     }
-
-//
-//
-//    public void increaseFreq(){
-//        frequency++;
-//    }
-
 }
