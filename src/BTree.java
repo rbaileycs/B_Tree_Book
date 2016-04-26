@@ -196,7 +196,8 @@ public class BTree {
      * @param key key being inserted
      */
     private void insertNonFull(Node node, long key) {
-        System.out.println("Inserting Key: " + key);
+        //System.out.println("Inserting Key: " + key);
+        QueryGenius(key);
         //Returns the value of the index where a key value's
         //frequency is updated.
         long insertKey = hashFunc(key, node);
@@ -206,7 +207,7 @@ public class BTree {
          */
         if(search(root, key) != null){
             freq[(int)insertKey]++;
-            System.out.println("KEY: " + key + " FREQ: " +  freq[(int)insertKey]);
+//            System.out.println("KEY: " + key + " FREQ: " +  freq[(int)insertKey]);
             return;
         }
 
@@ -222,8 +223,8 @@ public class BTree {
             node.key[i] = key;
             node.numOfKeys++;
 
-            if(node.numOfKeys == (2 * order) - 1)
-                System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
+//            if(node.numOfKeys == (2 * order) - 1)
+//                System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
             // x.write();
         } else {
 
@@ -252,5 +253,14 @@ public class BTree {
     public long hashFunc(long key, Node node)
     {
         return (((key % freq.length) + key) % freq.length);
+    }
+
+    public void QueryGenius(long key){
+
+
+        System.out.println("KEY TO BINARY: " + GeneConverter.toString(key));
+
+
+
     }
 }

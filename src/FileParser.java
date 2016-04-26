@@ -33,6 +33,7 @@ public class FileParser {
         this.f = newFile;
         this.k = subStringSize;
         newTree = new BTree(order);
+        GeneConverter.subLength = subStringSize;
     }
 
     /**
@@ -64,6 +65,7 @@ public class FileParser {
                     if(subber.contains("n")){
                         i++;
                     }else{
+                        System.out.println("SUB: "+subber);
                         newTree.insert(newTree, GeneConverter.toLong(subber));
                         i++;
                     }
