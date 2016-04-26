@@ -42,7 +42,7 @@ public class GeneConverter {
                     mask = 0x03;
                     break;
                 default:
-                    mask += 0x00;
+                    mask = 0x00;
                     break;
             }
             smask |= (mask << i*2);
