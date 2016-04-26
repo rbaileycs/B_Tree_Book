@@ -5,7 +5,6 @@
  * @author Ryan Bailey
  */
 
-import java.util.Arrays;
 public class GeneConverter {
 
     protected static int subLength;
@@ -45,45 +44,44 @@ public class GeneConverter {
             }
             smask |= (mask << i*2);
         }
-        //System.out.println("SMASK: " + Long.toBinaryString(smask));
-        //System.out.println("TO STRING: " + toString(smask));
         return smask;
     }
 
 
     /**
-     *TODO:Finish this function
+     * This function takes in a key value and turns it
+     * back into a gene sequence as it is in the test files.
+     *
+     * @param key the key value to be converted
      */
-    protected static String toString(long key){
+    protected static String toString(long key) {
 
-        String binStr = Long.toBinaryString(key);
-        int length = 256 - binStr.length();
-        char[] padArray = new char[length];
-        Arrays.fill(padArray, '0');
-        String padString = new String(padArray);
-        binStr = padString + binStr;
-
+        long sBits;
         String rtnStr = "";
-        for(int i = 256-(2*subLength-1); i < 256 ; i=i+2) {
-            //System.out.println("binStr.charAt(i): " + binStr.charAt(i) + " i: " + i);
-            //System.out.println("binStr: " + binStr);
-            switch(binStr.charAt(i)) {
-                case '0':
-                    if(binStr.charAt(i-1) == '0') {
-                        rtnStr += "a";
-                    }
-                    if(binStr.charAt(i-1) == '1') {
-                        rtnStr += "c";
-                    }
+
+        for(int i = 0; i < subLength-1; i++){
+
+            sBits = key;
+            sBits = sBits >> 2*i;
+            sBits = sBits & 0x003;
+
+            switch((int)sBits) {
+                case 0:
+                    rtnStr += "a";
                     break;
-                case '1':
-                    if(binStr.charAt(i-1) == '0') {
-                        rtnStr += "g";
-                    }
-                    if(binStr.charAt(i-1) == '1') {
-                        rtnStr += "t";
-                    }
+
+                case 1:
+                    rtnStr += "c";
                     break;
+
+                case 2:
+                    rtnStr += "g";
+                    break;
+
+                case 3:
+                    rtnStr += "t";
+                    break;
+
                 default:
                     rtnStr += "";
                     break;
@@ -91,5 +89,5 @@ public class GeneConverter {
         }
         return rtnStr;
     }
-
 }
+
