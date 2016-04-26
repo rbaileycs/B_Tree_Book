@@ -1,10 +1,10 @@
-import java.util.Arrays;
-
 /**
  *BTree class is the 'container' class for the Node class.
  *
  * @author Ryan Bailey
  */
+import java.util.Arrays;
+
 public class BTree {
 
     /**
@@ -197,15 +197,16 @@ public class BTree {
      */
     private void insertNonFull(Node node, long key) {
         System.out.println("Inserting Key: " + key);
+        //Returns the value of the index where a key value's
+        //frequency is updated.
+        long insertKey = hashFunc(key, node);
         /**
          * Checks for duplicates
          * Uses linear probing
          */
         if(search(root, key) != null){
-            long insertKey = hashFunc(key, root);
             freq[(int)insertKey]++;
-            System.out.println("KEY: " + key);
-            System.out.println("FREQ: " +  freq[(int)insertKey]);
+            System.out.println("KEY: " + key + " FREQ: " +  freq[(int)insertKey]);
             return;
         }
 
@@ -217,7 +218,7 @@ public class BTree {
                 node.key[i] = node.key[i - 1];
                 i--;
             }
-
+            freq[(int)insertKey]++;
             node.key[i] = key;
             node.numOfKeys++;
 
