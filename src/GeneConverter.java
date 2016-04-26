@@ -41,6 +41,9 @@ public class GeneConverter {
                 case 't':
                     mask = 0x03;
                     break;
+                default:
+                    mask += 0x00;
+                    break;
             }
             smask |= (mask << i*2);
         }
@@ -69,19 +72,15 @@ public class GeneConverter {
                 case 0:
                     rtnStr += "a";
                     break;
-
                 case 1:
                     rtnStr += "c";
                     break;
-
                 case 2:
                     rtnStr += "g";
                     break;
-
                 case 3:
                     rtnStr += "t";
                     break;
-
                 default:
                     rtnStr += "";
                     break;
