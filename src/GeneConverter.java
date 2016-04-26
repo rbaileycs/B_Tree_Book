@@ -56,6 +56,7 @@ public class GeneConverter {
      * back into a gene sequence as it is in the test files.
      *
      * @param key the key value to be converted
+     * @return the gene sequence derived from the key
      */
     protected static String toString(long key) {
 

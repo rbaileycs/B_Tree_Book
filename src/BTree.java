@@ -170,7 +170,7 @@ public class BTree {
      * @param key the key being inserted
      */
     public void insert(BTree t, long key) {
-
+//        QueryGenius(key);
         Node root = t.root;
 
         if (root.numOfKeys == (2 * order) - 1) {
@@ -197,7 +197,7 @@ public class BTree {
      */
     private void insertNonFull(Node node, long key) {
         //System.out.println("Inserting Key: " + key);
-        QueryGenius(key);
+
         //Returns the value of the index where a key value's
         //frequency is updated.
         long insertKey = hashFunc(key, node);
