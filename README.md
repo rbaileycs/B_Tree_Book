@@ -37,10 +37,10 @@
 
      #OPTIONAL!!
      ------------
-     #toString function: GeneConverter Class
+     ###FINISHED : #toString function: GeneConverter Class
             This function should be able to convert the binary strings created in toLong to
             regular characters.
-                Ryan: Currently working on this. Will be used to implement the query class.
+                Ryan: ###FINISHED. Will be used to implement the query class.
                       May also be used for read/write testing.
 
      ANYTHING ELSE THAT NEEDS TO BE DONE SHOULD BE ADDED TO THIS README!! MAKE NOTES AS TASKS ARE COMPLETED.
