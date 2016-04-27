@@ -34,6 +34,8 @@
      #QUERY CLASS:
             This class chould reference BTree and be able to see how many times
             any subsequece has happened.
+  READ ---> Ryan: working on Query. Base class should be nearly finished. Need read/write
+            done for testing. Read/Write should be the next step.
 
      #OPTIONAL!!
      ------------
