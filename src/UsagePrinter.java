@@ -34,6 +34,21 @@ public class UsagePrinter {
 
             case 4: //Error message if file is not found
                 System.out.println("The file cannot be found.");
+
+            case 5: // Main error message for GeneBankSearch.java
+                System.out.println("To use ths program, please enter the following arguments:\n\n"
+                        + "java GeneBankSearch <btree file> <query file> [<debug level>]\n\n"
+                        + "btree file: the file written by BTree.java\n"
+                        + "query file: ????????????"
+                        + "debug level**: [0] The output of the queries should be printed on the\n"
+                        + "standard output stream. Any diagnostic messages, help and status messages\n"
+                        + "must be be printed on standard error stream");
+
+            case 6: //Error message if the BTree file isn't found
+                System.out.println("The BTree file cannot be found.");
+
+            case 7: //Error message if the query file isn't found
+                System.out.println("The query file cannot be found.");
         }
     }
 }

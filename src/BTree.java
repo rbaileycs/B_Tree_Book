@@ -87,7 +87,6 @@ public class BTree {
      */
     public Node search(Node node, long key) {
         int i = 0;
-        //System.out.println("DUPKEY: " + key);
         while (i < node.numOfKeys && key > node.key[i]) {
             i++;
         }
@@ -170,7 +169,7 @@ public class BTree {
      * @param key the key being inserted
      */
     public void insert(BTree t, long key) {
-//        QueryGenius(key);
+
         Node root = t.root;
 
         if (root.numOfKeys == (2 * order) - 1) {
@@ -185,6 +184,7 @@ public class BTree {
         else {
             insertNonFull(root, key);
         }
+        QueryGenius(key);
     }
 
     /**
@@ -196,18 +196,15 @@ public class BTree {
      * @param key key being inserted
      */
     private void insertNonFull(Node node, long key) {
-        //System.out.println("Inserting Key: " + key);
-
         //Returns the value of the index where a key value's
         //frequency is updated.
-        long insertKey = hashFunc(key, node);
+        long insertKey = hashFunc(key);
         /**
          * Checks for duplicates
          * Uses linear probing
          */
         if(search(root, key) != null){
             freq[(int)insertKey]++;
-//            System.out.println("KEY: " + key + " FREQ: " +  freq[(int)insertKey]);
             return;
         }
 
@@ -222,9 +219,6 @@ public class BTree {
             freq[(int)insertKey]++;
             node.key[i] = key;
             node.numOfKeys++;
-
-//            if(node.numOfKeys == (2 * order) - 1)
-//                System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
             // x.write();
         } else {
 
@@ -247,20 +241,19 @@ public class BTree {
      * This function contains the hash function needed to increase
      * the frequency count for keys that are duplicates.
      * @param key key to be inserted
-     * @param node node object for using frequency array
+     * //@param node node object for using frequency array
      * @return hashvalue for key
      */
-    public long hashFunc(long key, Node node)
+    public long hashFunc(long key)
     {
         return (((key % freq.length) + key) % freq.length);
     }
 
     public void QueryGenius(long key){
 
+        long keyVal = hashFunc(key);
 
-        System.out.println("KEY TO BINARY: " + GeneConverter.toString(key));
-
-
+            System.out.println(GeneConverter.toString(key) + ": " + freq[(int)keyVal]);
 
     }
 }
