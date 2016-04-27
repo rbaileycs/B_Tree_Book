@@ -3,6 +3,10 @@
  *
  * @author Ryan Bailey
  */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Collections;
+
 public class BTree {
 
     /**
@@ -57,7 +61,8 @@ public class BTree {
      */
     private Node root;
     private final int order; //Degree of the BTree (t)
-    private final long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
+    protected final long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
+    private HashMap<Long, Integer> dups;
 
     /**
      * Constructor for the BTree
@@ -70,6 +75,7 @@ public class BTree {
         root = new Node();
         root.isALeaf = true;
         root.numOfKeys = 0;
+        dups = new HashMap<Long, Integer>();
     }
 
     /**
@@ -178,7 +184,7 @@ public class BTree {
         else {
             insertNonFull(root, key);
         }
-        QueryGenius(key);
+//        QueryGenius(key);
     }
 
     /**
@@ -198,7 +204,7 @@ public class BTree {
          * Uses linear probing
          */
         if(search(root, key) != null){
-            freq[(int)insertKey]++;
+            dups.put(key, (int)++freq[(int)insertKey]);
             return;
         }
 
@@ -210,7 +216,7 @@ public class BTree {
                 node.key[i] = node.key[i - 1];
                 i--;
             }
-            freq[(int)insertKey]++;
+            dups.put(key, (int)++freq[(int)insertKey]);
             node.key[i] = key;
             node.numOfKeys++;
             // x.write();
@@ -242,11 +248,22 @@ public class BTree {
         return (((key % freq.length) + key) % freq.length);
     }
 
-    private void QueryGenius(long key){
+//    protected void QueryGenius(long key){
+//
+//        long keyVal = hashFunc(key);
+//
+//            System.out.println(GeneConverter.toString(key) + ": " + freq[(int)keyVal]);
+//
+//    }
 
-        long keyVal = hashFunc(key);
-
-            System.out.println(GeneConverter.toString(key) + ": " + freq[(int)keyVal]);
-
+    /**
+     * Print function for the dump printer.
+     */
+    public void printIt() {
+        ArrayList<Long> keyList = new ArrayList<Long>(dups.keySet());
+        Collections.sort(keyList);
+        for(long key : keyList) {
+            System.out.println(dups.get(key) + " : " + GeneConverter.toString(key));
+        }
     }
 }

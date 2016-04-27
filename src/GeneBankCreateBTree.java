@@ -81,5 +81,9 @@ public class GeneBankCreateBTree {
 
         FileParser parse = new FileParser(degree, file, sequenceLength);
         parse.parseFromOriginToKey();
+
+        if(Integer.valueOf(args[3]) == 1){
+            dumperLicken.dumperDoodle(parse);
+        }
     }
 }

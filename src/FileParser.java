@@ -65,12 +65,18 @@ public class FileParser {
                     if(subber.contains("n")){
                         i++;
                     }else{
-                        System.out.println("SUB: "+subber);
                         newTree.insert(newTree, GeneConverter.toLong(subber));
                         i++;
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Print function for the dump file
+     */
+    public void dumpPrinter(){
+        newTree.printIt();
     }
 }
