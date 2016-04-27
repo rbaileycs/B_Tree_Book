@@ -61,7 +61,7 @@ public class BTree {
      */
     private Node root;
     private final int order; //Degree of the BTree (t)
-    private long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
+    private final long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
 
 
     /**
@@ -85,7 +85,7 @@ public class BTree {
      * @param key key being searched for
      * @return something
      */
-    public Node search(Node node, long key) {
+    private Node search(Node node, long key) {
         int i = 0;
         while (i < node.numOfKeys && key > node.key[i]) {
             i++;
@@ -121,26 +121,26 @@ public class BTree {
         z.isALeaf = y.isALeaf;
         z.numOfKeys = order - 1;
 
-        for(int j = 0; j < order - 1; j++) {
-            z.key[j] = y.key[j + order];
-        }
+        /**
+         * public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+         *
+         * Copies an array from the specified source array, beginning at the specified position,
+         * to the specified position of the destination array.
+         */
+        System.arraycopy(y.key, 0 + order, z.key, 0, order - 1);
 
         if(!y.isALeaf) {
-            for(int j = 0; j < order; j++) {
-                z.child[j] = y.child[j + order];
-            }
+            System.arraycopy(y.child, 0 + order, z.child, 0, order);
         }
 
         y.numOfKeys = order - 1;
 
-        for(int j = parent.numOfKeys; j > index; j--) {
-            parent.child[j + 1] = parent.child[j];
-        }
+        System.arraycopy(parent.child, index + 1, parent.child, index + 1 + 1, parent.numOfKeys - index);
+
         parent.child[index + 1] = z;
 
-        for(int j = parent.numOfKeys - 1; j >= index; j--) {
-            parent.key[j+1] = parent.key[j];
-        }
+        System.arraycopy(parent.key, index, parent.key, index + 1, parent.numOfKeys - index);
+
         parent.key[index] = y.key[order - 1];
         y.key[order - 1] = 0;
 
@@ -244,12 +244,12 @@ public class BTree {
      * //@param node node object for using frequency array
      * @return hashvalue for key
      */
-    public long hashFunc(long key)
+    private long hashFunc(long key)
     {
         return (((key % freq.length) + key) % freq.length);
     }
 
-    public void QueryGenius(long key){
+    private void QueryGenius(long key){
 
         long keyVal = hashFunc(key);
 

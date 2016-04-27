@@ -28,7 +28,7 @@ public class GeneBankCreateBTree {
          * java GeneBankCreateBTree <degree> <gbk file> <sequence length> [<debug level>]
          */
 
-        int degree = 0; //degree of BTree. Should be 2 or greater.
+        int degree; //degree of BTree. Should be 2 or greater.
         int sequenceLength; //Size of subsequences. Should be between 1 and 31.
 
         /**

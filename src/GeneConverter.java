@@ -10,7 +10,7 @@ public class GeneConverter {
     protected static int subLength;
 
     public GeneConverter(int subLength){
-        this.subLength = subLength;
+        GeneConverter.subLength = subLength;
     }
     /**
      * This function takes in a sub string from FileParser
@@ -24,7 +24,7 @@ public class GeneConverter {
      */
     protected static long toLong(String key){
 
-        long mask = 0x00, smask = 0x00;
+        long mask, smask = 0x00;
 
         for (int i = 0; i < key.length(); i++){
             char c  = key.toLowerCase().charAt(i);
