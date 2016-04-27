@@ -39,7 +39,7 @@ public class UsagePrinter {
                 System.out.println("To use ths program, please enter the following arguments:\n\n"
                         + "java GeneBankSearch <btree file> <query file> [<debug level>]\n\n"
                         + "btree file: the file written by BTree.java\n"
-                        + "query file: ????????????"
+                        + "query file: ????????????\n"
                         + "debug level**: [0] The output of the queries should be printed on the\n"
                         + "standard output stream. Any diagnostic messages, help and status messages\n"
                         + "must be be printed on standard error stream");

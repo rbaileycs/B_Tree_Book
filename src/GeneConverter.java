@@ -1,5 +1,5 @@
 /**
- * This class features functions to convert substrings to binary
+ * This class features functions to convert sub-strings to binary
  * and binary "strings" to strings.
  *
  * @author Ryan Bailey
@@ -62,7 +62,7 @@ public class GeneConverter {
         long sBits;
         String rtnStr = "";
 
-        for(int i = 0; i < subLength-1; i++){
+        for(int i = 0; i < subLength; i++){
 
             sBits = key;
             sBits = sBits >> 2*i;

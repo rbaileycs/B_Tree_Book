@@ -4,7 +4,7 @@
  * the data required from the file and assign it to the string word.
  * Then newWord will replace any unnecessary data with an empty space.
  * longString then appends the information to itself as FileParser moves
- * through the file. Finally, subber splits longString into substrings
+ * through the file. Finally, subber splits longString into sub-strings
  * and passes it to GeneConverter, which converts it to binary, and finally
  * to newTree (a BTree object).
  *
@@ -25,7 +25,7 @@ public class FileParser {
      * Constructor for FileParser.
      *
      * @param newFile file to be read
-     * @param subStringSize size of substrings
+     * @param subStringSize size of sub-strings
      * @param order degree of the BTree
      */
     public FileParser(int order, File newFile, int subStringSize){
@@ -58,9 +58,9 @@ public class FileParser {
                     //The final gene sequence string
                     longString  = longString + word;
                 }
-                // Splits longString into substrings
-                while(i+(this.k-1) <= longString.length()){
-                    String subber = longString.substring(i, i + (this.k - 1));
+                // Splits longString into sub-strings
+                while(i+(this.k) <= longString.length()){
+                    String subber = longString.substring(i, i + (this.k ));
                     //Skips any n characters in the sequence
                     if(subber.contains("n")){
                         i++;

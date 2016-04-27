@@ -13,7 +13,7 @@ public class GeneBankSearch {
      * Main class for GeneBankSearch
      * @param args args passed from command line
      */
-    public static void main (String[] args) throws FileNotFoundException{
+    public static void classer (String[] args) throws FileNotFoundException{
         /**
          * Proper usage for this class:
          *
