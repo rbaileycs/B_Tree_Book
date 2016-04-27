@@ -3,8 +3,6 @@
  *
  * @author Ryan Bailey
  */
-import java.util.Arrays;
-
 public class BTree {
 
     /**
@@ -20,7 +18,6 @@ public class BTree {
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
-
 
         /**
          *Node constructor
@@ -51,7 +48,6 @@ public class BTree {
 
         void read(Node node){
 
-
             //reads contents from specific block on disk
         }
     }
@@ -62,7 +58,6 @@ public class BTree {
     private Node root;
     private final int order; //Degree of the BTree (t)
     private final long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
-
 
     /**
      * Constructor for the BTree
@@ -122,15 +117,18 @@ public class BTree {
         z.numOfKeys = order - 1;
 
         /**
-         * public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+         * arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
          *
          * Copies an array from the specified source array, beginning at the specified position,
          * to the specified position of the destination array.
+         *
+         * This is a native call, which reduces runtime. Why? It copies blocks of memory instead
+         * of copying single array elements.
          */
-        System.arraycopy(y.key, 0 + order, z.key, 0, order - 1);
+        System.arraycopy(y.key, order, z.key, 0, order - 1);
 
         if(!y.isALeaf) {
-            System.arraycopy(y.child, 0 + order, z.child, 0, order);
+            System.arraycopy(y.child, order, z.child, 0, order);
         }
 
         y.numOfKeys = order - 1;
@@ -150,10 +148,6 @@ public class BTree {
         }
 
         parent.numOfKeys++;
-
-        System.out.println("PARENT: " + Arrays.toString(parent.key));
-        System.out.println("LEFT: " + Arrays.toString(y.key));
-        System.out.println("RIGHT: " + Arrays.toString(z.key));
 
 //        y.write();
 //        z.write();
@@ -241,8 +235,7 @@ public class BTree {
      * This function contains the hash function needed to increase
      * the frequency count for keys that are duplicates.
      * @param key key to be inserted
-     * //@param node node object for using frequency array
-     * @return hashvalue for key
+     * @return hash value for key
      */
     private long hashFunc(long key)
     {

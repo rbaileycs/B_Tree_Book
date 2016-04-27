@@ -50,7 +50,6 @@ public class GeneConverter {
         return smask;
     }
 
-
     /**
      * This function takes in a key value and turns it
      * back into a gene sequence as it is in the test files.

@@ -1,11 +1,10 @@
 /**
  * This class searches the BTree file created by BTree
- * and the query class for any specifed dupilcates and
+ * and the query class for any specified duplicates and
  * their frequencies.
  *
  * @author Ryan Bailey
  */
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -34,11 +33,5 @@ public class GeneBankSearch {
         else if(!queryFile.exists()){
             UsagePrinter.errorMessage(7);
         }
-
-
-
-
-
     }
-
 }
