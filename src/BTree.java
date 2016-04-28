@@ -1,10 +1,12 @@
-import java.util.Arrays;
-
 /**
  *BTree class is the 'container' class for the Node class.
  *
  * @author Ryan Bailey
  */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Collections;
+
 public class BTree {
 
     /**
@@ -20,7 +22,6 @@ public class BTree {
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
-
 
         /**
          *Node constructor
@@ -51,7 +52,6 @@ public class BTree {
 
         void read(Node node){
 
-
             //reads contents from specific block on disk
         }
     }
@@ -61,8 +61,7 @@ public class BTree {
      */
     private Node root;
     private final int order; //Degree of the BTree (t)
-    private long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
-
+    private HashMap<Long, Integer> dups;
 
     /**
      * Constructor for the BTree
@@ -75,6 +74,7 @@ public class BTree {
         root = new Node();
         root.isALeaf = true;
         root.numOfKeys = 0;
+        dups = new HashMap<>();
     }
 
     /**
@@ -85,9 +85,8 @@ public class BTree {
      * @param key key being searched for
      * @return something
      */
-    public Node search(Node node, long key) {
+    private Node search(Node node, long key) {
         int i = 0;
-        //System.out.println("DUPKEY: " + key);
         while (i < node.numOfKeys && key > node.key[i]) {
             i++;
         }
@@ -122,26 +121,29 @@ public class BTree {
         z.isALeaf = y.isALeaf;
         z.numOfKeys = order - 1;
 
-        for(int j = 0; j < order - 1; j++) {
-            z.key[j] = y.key[j + order];
-        }
+        /**
+         * arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+         *
+         * Copies an array from the specified source array, beginning at the specified position,
+         * to the specified position of the destination array.
+         *
+         * This is a native call, which reduces runtime. Why? It copies blocks of memory instead
+         * of copying single array elements.
+         */
+        System.arraycopy(y.key, order, z.key, 0, order - 1);
 
         if(!y.isALeaf) {
-            for(int j = 0; j < order; j++) {
-                z.child[j] = y.child[j + order];
-            }
+            System.arraycopy(y.child, order, z.child, 0, order);
         }
 
         y.numOfKeys = order - 1;
 
-        for(int j = parent.numOfKeys; j > index; j--) {
-            parent.child[j + 1] = parent.child[j];
-        }
+        System.arraycopy(parent.child, index + 1, parent.child, index + 1 + 1, parent.numOfKeys - index);
+
         parent.child[index + 1] = z;
 
-        for(int j = parent.numOfKeys - 1; j >= index; j--) {
-            parent.key[j+1] = parent.key[j];
-        }
+        System.arraycopy(parent.key, index, parent.key, index + 1, parent.numOfKeys - index);
+
         parent.key[index] = y.key[order - 1];
         y.key[order - 1] = 0;
 
@@ -151,10 +153,6 @@ public class BTree {
         }
 
         parent.numOfKeys++;
-
-        System.out.println("PARENT: " + Arrays.toString(parent.key));
-        System.out.println("LEFT: " + Arrays.toString(y.key));
-        System.out.println("RIGHT: " + Arrays.toString(z.key));
 
 //        y.write();
 //        z.write();
@@ -185,6 +183,7 @@ public class BTree {
         else {
             insertNonFull(root, key);
         }
+//        QueryGenius(key);
     }
 
     /**
@@ -196,16 +195,14 @@ public class BTree {
      * @param key key being inserted
      */
     private void insertNonFull(Node node, long key) {
-        System.out.println("Inserting Key: " + key);
+        //Returns the value of the index where a key value's
+        //frequency is updated.
         /**
          * Checks for duplicates
          * Uses linear probing
          */
         if(search(root, key) != null){
-            long insertKey = hashFunc(key, root);
-            freq[(int)insertKey]++;
-            System.out.println("KEY: " + key);
-            System.out.println("FREQ: " +  freq[(int)insertKey]);
+            dups.put(key, dups.get(key)+1);
             return;
         }
 
@@ -217,12 +214,9 @@ public class BTree {
                 node.key[i] = node.key[i - 1];
                 i--;
             }
-
+            dups.put(key, 1);
             node.key[i] = key;
             node.numOfKeys++;
-
-            if(node.numOfKeys == (2 * order) - 1)
-                System.out.println("PARENT BEFORE SPLIT: " + Arrays.toString(node.key));
             // x.write();
         } else {
 
@@ -241,15 +235,23 @@ public class BTree {
         }
     }
 
+
+//    protected void QueryGenius(long key){
+//
+//        long keyVal = hashFunc(key);
+//
+//            System.out.println(GeneConverter.toString(key) + ": " + freq[(int)keyVal]);
+//
+//    }
+
     /**
-     * This function contains the hash function needed to increase
-     * the frequency count for keys that are duplicates.
-     * @param key key to be inserted
-     * @param node node object for using frequency array
-     * @return hashvalue for key
+     * Print function for the dump printer.
      */
-    public long hashFunc(long key, Node node)
-    {
-        return (((key % freq.length) + key) % freq.length);
+    public void printIt() {
+        ArrayList<Long> keyList = new ArrayList<>(dups.keySet());
+        Collections.sort(keyList);
+        for(long key : keyList) {
+            System.out.println(dups.get(key) + " : " + GeneConverter.toString(key));
+        }
     }
 }

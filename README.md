@@ -34,12 +34,16 @@
      #QUERY CLASS:
             This class chould reference BTree and be able to see how many times
             any subsequece has happened.
+  READ ---> Ryan: working on Query. Base class should be nearly finished. Need read/write
+            done for testing. Read/Write should be the next step.
 
      #OPTIONAL!!
      ------------
-     #toString function: GeneConverter Class
+     ###FINISHED : #toString function: GeneConverter Class
             This function should be able to convert the binary strings created in toLong to
-            regular characters. ###LAST!!!
+            regular characters.
+                Ryan: ###FINISHED. Will be used to implement the query class.
+                      May also be used for read/write testing.
 
      ANYTHING ELSE THAT NEEDS TO BE DONE SHOULD BE ADDED TO THIS README!! MAKE NOTES AS TASKS ARE COMPLETED.
 

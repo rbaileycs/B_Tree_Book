@@ -1,10 +1,17 @@
 /**
- * This class features functions to convert substrings to binary
+ * This class features functions to convert sub-strings to binary
  * and binary "strings" to strings.
  *
  * @author Ryan Bailey
  */
+
 public class GeneConverter {
+
+    protected static int subLength;
+
+    public GeneConverter(int subLength){
+        GeneConverter.subLength = subLength;
+    }
     /**
      * This function takes in a sub string from FileParser
      * and turns it into binary by splitting the sub string
@@ -17,7 +24,7 @@ public class GeneConverter {
      */
     protected static long toLong(String key){
 
-        long mask = 0x00, smask = 0x00;
+        long mask, smask = 0x00;
 
         for (int i = 0; i < key.length(); i++){
             char c  = key.toLowerCase().charAt(i);
@@ -34,20 +41,52 @@ public class GeneConverter {
                 case 't':
                     mask = 0x03;
                     break;
+                default:
+                    mask = 0x00;
+                    break;
             }
             smask |= (mask << i*2);
-
         }
-        //System.out.println("SMASK: " + Long.toBinaryString(smask));
         return smask;
     }
 
-
     /**
-     *TODO:Finish this function
+     * This function takes in a key value and turns it
+     * back into a gene sequence as it is in the test files.
+     *
+     * @param key the key value to be converted
+     * @return the gene sequence derived from the key
      */
-    protected static String toString(long key, int subLength){
-        return "0";
-    }
+    protected static String toString(long key) {
 
+        long sBits;
+        String rtnStr = "";
+
+        for(int i = 0; i < subLength; i++){
+
+            sBits = key;
+            sBits = sBits >> 2*i;
+            sBits = sBits & 0x003;
+
+            switch((int)sBits) {
+                case 0:
+                    rtnStr += "a";
+                    break;
+                case 1:
+                    rtnStr += "c";
+                    break;
+                case 2:
+                    rtnStr += "g";
+                    break;
+                case 3:
+                    rtnStr += "t";
+                    break;
+                default:
+                    rtnStr += "";
+                    break;
+            }
+        }
+        return rtnStr;
+    }
 }
+

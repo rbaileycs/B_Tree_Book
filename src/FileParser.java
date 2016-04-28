@@ -4,7 +4,7 @@
  * the data required from the file and assign it to the string word.
  * Then newWord will replace any unnecessary data with an empty space.
  * longString then appends the information to itself as FileParser moves
- * through the file. Finally, subber splits longString into substrings
+ * through the file. Finally, subber splits longString into sub-strings
  * and passes it to GeneConverter, which converts it to binary, and finally
  * to newTree (a BTree object).
  *
@@ -25,14 +25,15 @@ public class FileParser {
      * Constructor for FileParser.
      *
      * @param newFile file to be read
-     * @param subStringSize size of substrings
+     * @param subStringSize size of sub-strings
      * @param order degree of the BTree
      */
-    public FileParser(File newFile, int subStringSize, int order){
+    public FileParser(int order, File newFile, int subStringSize){
 
         this.f = newFile;
         this.k = subStringSize;
         newTree = new BTree(order);
+        GeneConverter.subLength = subStringSize;
     }
 
     /**
@@ -48,14 +49,19 @@ public class FileParser {
         while(scan.hasNext()){
             if(scan.next().equalsIgnoreCase("ORIGIN")){
                 while(scan.hasNext()){
+                    //Replace any non-char with whitespace
                     String word = scan.next().replaceAll("[\\d]+", "");
+                    //Exit key breaks out of while loop
                     if (word.equalsIgnoreCase("//")){
                         break;
                     }
+                    //The final gene sequence string
                     longString  = longString + word;
                 }
-                while(i+(this.k-1) <= longString.length()){
-                    String subber = longString.substring(i, i + (this.k - 1));
+                // Splits longString into sub-strings
+                while(i+(this.k) <= longString.length()){
+                    String subber = longString.substring(i, i + (this.k ));
+                    //Skips any n characters in the sequence
                     if(subber.contains("n")){
                         i++;
                     }else{
@@ -65,5 +71,12 @@ public class FileParser {
                 }
             }
         }
+    }
+
+    /**
+     * Print function for the dump file
+     */
+    public void dumpPrinter(){
+        newTree.printIt();
     }
 }

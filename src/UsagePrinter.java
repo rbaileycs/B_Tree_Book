@@ -13,7 +13,7 @@ public class UsagePrinter {
      */
     static void errorMessage(int n) {
         switch (n) {
-            case 1: //Error message display for GeneBankCreateBTree.java
+            case 1: //Main error message display for GeneBankCreateBTree.java
                 System.out.println("To use this program, please enter the following arguments:\n\n"
                         + "\tjava GeneBankCreateBTree <degree> <gbk file> <sequence length> [<debug level>]\n\n"
                         + "degree: The degree for the BTree\n"
@@ -25,6 +25,30 @@ public class UsagePrinter {
                         + "\t1: The program writes a text file named dump, that has the following line format:\n"
                         + "\t\t<frequency> <DNA string>.\n"
                         + "\t   The dump file contains frequency and DNA string (corresponding to the key stored) in an inorder traversal.");
+
+            case 2: //Error message if substring length is not correct
+                System.out.println("Substring length must be between 1 and 31.");
+
+            case 3: //Error message if degree is less than 2
+                System.out.println("The degree value must be greater than 2");
+
+            case 4: //Error message if file is not found
+                System.out.println("The file cannot be found.");
+
+            case 5: // Main error message for GeneBankSearch.java
+                System.out.println("To use ths program, please enter the following arguments:\n\n"
+                        + "java GeneBankSearch <btree file> <query file> [<debug level>]\n\n"
+                        + "btree file: the file written by BTree.java\n"
+                        + "query file: ????????????\n"
+                        + "debug level**: [0] The output of the queries should be printed on the\n"
+                        + "standard output stream. Any diagnostic messages, help and status messages\n"
+                        + "must be be printed on standard error stream");
+
+            case 6: //Error message if the BTree file isn't found
+                System.out.println("The BTree file cannot be found.");
+
+            case 7: //Error message if the query file isn't found
+                System.out.println("The query file cannot be found.");
         }
     }
 }
