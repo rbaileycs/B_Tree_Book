@@ -6,6 +6,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
+import java.io.*;
 
 public class BTree {
 
@@ -22,7 +23,8 @@ public class BTree {
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
-
+        protected RandomAccessFile file;
+        
         /**
          *Node constructor
          */
@@ -45,14 +47,40 @@ public class BTree {
         }
 
         //How to handle read/writes of nodes. fseek /Random Access File /Seek file option
-        void write(){
-
-            //writes out contents to specific block on disk
+        void write() throws IOException{
+//        	String GeneBankfilename = "";
+//        	String sequenceLength = ""; 
+//        	String degree = "";
+//        	
+//        	String filename = GeneBankfilename + ".btree.data" +
+//        	sequenceLength + "." + sequenceLength + degree; 
+//        	
+//        	//writes out contents to specific block on disk
+//        	file = new RandomAccessFile(filename, "rw");
+//        	//seek to root node to write it to disk.
+//        	file.seek(0);
+//        	
+//        	//file.writeLong(key);
+//        	file.close();
         }
 
-        void read(Node node){
-
-            //reads contents from specific block on disk
+        void read(Node node) throws IOException{
+//        	//reads contents from specific block on disk
+//        	
+//        	String GeneBankfilename = "";
+//        	String sequenceLength = ""; 
+//        	String degree = "";
+//        	
+//        	String filename = GeneBankfilename + ".btree.data" +
+//        	sequenceLength + "." + sequenceLength + degree; 
+//        	
+//        	file = new RandomAccessFile(filename, "r");
+//        	//seeks to root node of current file and prints output.
+//        	file.seek(0);
+//        	int output = file.readLong(parent.key);
+//        	System.out.println(output);
+//        	
+//        	file.close();
         }
     }
 
