@@ -61,7 +61,6 @@ public class BTree {
      */
     private Node root;
     private final int order; //Degree of the BTree (t)
-    protected final long[] freq = new long[(int)Math.pow(31,4)]; //Had to make a huge array. It makes me salty.
     private HashMap<Long, Integer> dups;
 
     /**
@@ -75,7 +74,7 @@ public class BTree {
         root = new Node();
         root.isALeaf = true;
         root.numOfKeys = 0;
-        dups = new HashMap<Long, Integer>();
+        dups = new HashMap<>();
     }
 
     /**
@@ -198,13 +197,12 @@ public class BTree {
     private void insertNonFull(Node node, long key) {
         //Returns the value of the index where a key value's
         //frequency is updated.
-        long insertKey = hashFunc(key);
         /**
          * Checks for duplicates
          * Uses linear probing
          */
         if(search(root, key) != null){
-            dups.put(key, (int)++freq[(int)insertKey]);
+            dups.put(key, dups.get(key)+1);
             return;
         }
 
@@ -216,7 +214,7 @@ public class BTree {
                 node.key[i] = node.key[i - 1];
                 i--;
             }
-            dups.put(key, (int)++freq[(int)insertKey]);
+            dups.put(key, 1);
             node.key[i] = key;
             node.numOfKeys++;
             // x.write();
@@ -237,16 +235,6 @@ public class BTree {
         }
     }
 
-    /**
-     * This function contains the hash function needed to increase
-     * the frequency count for keys that are duplicates.
-     * @param key key to be inserted
-     * @return hash value for key
-     */
-    private long hashFunc(long key)
-    {
-        return (((key % freq.length) + key) % freq.length);
-    }
 
 //    protected void QueryGenius(long key){
 //
@@ -260,7 +248,7 @@ public class BTree {
      * Print function for the dump printer.
      */
     public void printIt() {
-        ArrayList<Long> keyList = new ArrayList<Long>(dups.keySet());
+        ArrayList<Long> keyList = new ArrayList<>(dups.keySet());
         Collections.sort(keyList);
         for(long key : keyList) {
             System.out.println(dups.get(key) + " : " + GeneConverter.toString(key));
