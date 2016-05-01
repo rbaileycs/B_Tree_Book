@@ -10,6 +10,13 @@ import java.io.*;
 
 public class BTree {
 
+    private Node root;
+    private final int order; //Degree of the BTree (t)
+    private HashMap<Long, Integer> dups;
+    private RandomAccessFile file;
+    private File f;
+    protected String fileName;
+
     /**
      * Node class is the manipulator class for the nodes
      * stored in BTree.
@@ -19,12 +26,12 @@ public class BTree {
     private class Node{
 
         protected int numOfKeys;
-        protected final long[] key;
+        protected long[] key, keyLocations;
         protected final Node parent;
         protected final Node[] child;
         protected boolean isALeaf;
-        protected RandomAccessFile file;
-        
+        private long fileOffset;
+
         /**
          *Node constructor
          */
@@ -33,6 +40,7 @@ public class BTree {
             this.parent = null;
             child = new Node[2 * order];
             key = new long[(2 * order) - 1];
+            keyLocations = new long[(2 * order) - 1];
         }
 
         /**
@@ -42,67 +50,47 @@ public class BTree {
          * @return child at ith index
          */
         public Node getChild(int index){
-
             return child[index];
         }
 
-        //How to handle read/writes of nodes. fseek /Random Access File /Seek file option
         void write() throws IOException{
-//        	String GeneBankfilename = "";
-//        	String sequenceLength = ""; 
-//        	String degree = "";
-//        	
-//        	String filename = GeneBankfilename + ".btree.data" +
-//        	sequenceLength + "." + sequenceLength + degree; 
-//        	
-//        	//writes out contents to specific block on disk
-//        	file = new RandomAccessFile(filename, "rw");
-//        	//seek to root node to write it to disk.
-//        	file.seek(0);
-//        	
-//        	//file.writeLong(key);
-//        	file.close();
+
+            fileOffset = file.getFilePointer();
+            for(int i = 0; i < numOfKeys; i++) {
+                keyLocations[i] = file.getFilePointer();
+                file.writeLong(key[i]);
+            }
         }
 
         void read(Node node) throws IOException{
-//        	//reads contents from specific block on disk
-//        	
-//        	String GeneBankfilename = "";
-//        	String sequenceLength = ""; 
-//        	String degree = "";
-//        	
-//        	String filename = GeneBankfilename + ".btree.data" +
-//        	sequenceLength + "." + sequenceLength + degree; 
-//        	
-//        	file = new RandomAccessFile(filename, "r");
-//        	//seeks to root node of current file and prints output.
-//        	file.seek(0);
-//        	int output = file.readLong(parent.key);
-//        	System.out.println(output);
-//        	
-//        	file.close();
+
         }
     }
-
-    /**
-     * BTree variables
-     */
-    private Node root;
-    private final int order; //Degree of the BTree (t)
-    private HashMap<Long, Integer> dups;
 
     /**
      * Constructor for the BTree
      *
      * @param order order/degree of tree. AKA 't'
      */
-    public BTree(int order){
-
+    public BTree(File f, int seqLength, int order) throws IOException{
+        this.f = f;
+        fileName = f.getName() + ".btree.data." + seqLength + "." + order;
         this.order = order;
         root = new Node();
         root.isALeaf = true;
         root.numOfKeys = 0;
         dups = new HashMap<>();
+        //writes out contents to specific block on disk
+        file = new RandomAccessFile(fileName, "rw");
+        file.seek(0);
+    }
+
+    public void writeRoot() throws IOException {
+        root.write();
+    }
+
+    public void read() throws IOException{
+        file.seek(968);
     }
 
     /**
@@ -141,9 +129,9 @@ public class BTree {
      * @param parent parent that will take the median value
      * @param index the index for the split
      */
-    private void split(Node parent, int index) {
+    private void split(Node parent, int index) throws IOException {
 
-        Node z = new Node();//changed from index to order
+        Node z = new Node();
         Node y = parent.getChild(index);
 
         z.isALeaf = y.isALeaf;
@@ -182,9 +170,9 @@ public class BTree {
 
         parent.numOfKeys++;
 
-//        y.write();
-//        z.write();
-//        parent.write();
+        y.write();
+        z.write();
+        parent.write();
     }
 
     /**
@@ -195,7 +183,7 @@ public class BTree {
      * @param t the tree containing the nodes to insert into
      * @param key the key being inserted
      */
-    public void insert(BTree t, long key) {
+    public void insert(BTree t, long key) throws IOException  {
 
         Node root = t.root;
 
@@ -211,7 +199,6 @@ public class BTree {
         else {
             insertNonFull(root, key);
         }
-//        QueryGenius(key);
     }
 
     /**
@@ -222,7 +209,7 @@ public class BTree {
      * @param node node being inserted into
      * @param key key being inserted
      */
-    private void insertNonFull(Node node, long key) {
+    private void insertNonFull(Node node, long key)throws IOException  {
         //Returns the value of the index where a key value's
         //frequency is updated.
         /**
@@ -245,7 +232,7 @@ public class BTree {
             dups.put(key, 1);
             node.key[i] = key;
             node.numOfKeys++;
-            // x.write();
+            node.write();
         } else {
 
             int j = 0;
@@ -263,21 +250,13 @@ public class BTree {
         }
     }
 
-
-//    protected void QueryGenius(long key){
-//
-//        long keyVal = hashFunc(key);
-//
-//            System.out.println(GeneConverter.toString(key) + ": " + freq[(int)keyVal]);
-//
-//    }
-
     /**
      * Print function for the dump printer.
      */
-    public void printIt() {
+    public void printIt()throws FileNotFoundException {
         ArrayList<Long> keyList = new ArrayList<>(dups.keySet());
         Collections.sort(keyList);
+        keyList.retainAll(QueryFilter.makeFilter());
         for(long key : keyList) {
             System.out.println(dups.get(key) + " : " + GeneConverter.toString(key));
         }

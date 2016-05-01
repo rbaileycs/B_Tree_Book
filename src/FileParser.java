@@ -12,6 +12,7 @@
  */
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class FileParser {
@@ -28,11 +29,11 @@ public class FileParser {
      * @param subStringSize size of sub-strings
      * @param order degree of the BTree
      */
-    public FileParser(int order, File newFile, int subStringSize){
+    public FileParser(int order, File newFile, int subStringSize) throws IOException{
 
         this.f = newFile;
         this.k = subStringSize;
-        newTree = new BTree(order);
+        newTree = new BTree(f, subStringSize, order);
         GeneConverter.subLength = subStringSize;
     }
 
@@ -41,7 +42,7 @@ public class FileParser {
      *
      * @throws FileNotFoundException throws exception just in case file is not found
      */
-    public void parseFromOriginToKey() throws FileNotFoundException {
+    public void parseFromOriginToKey() throws FileNotFoundException, IOException {
 
         int i = 0;
         Scanner scan = new Scanner(this.f);
@@ -71,12 +72,15 @@ public class FileParser {
                 }
             }
         }
+        dumpPrinter();
+        newTree.writeRoot();
+        newTree.read();
     }
 
     /**
      * Print function for the dump file
      */
-    public void dumpPrinter(){
+    public void dumpPrinter() throws FileNotFoundException{
         newTree.printIt();
     }
 }
