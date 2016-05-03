@@ -42,7 +42,7 @@ public class FileParser {
      *
      * @throws FileNotFoundException throws exception just in case file is not found
      */
-    public void parseFromOriginToKey() throws FileNotFoundException, IOException {
+    public void parseFromOriginToKey() throws FileNotFoundException, IOException, ClassNotFoundException {
 
         int i = 0;
         Scanner scan = new Scanner(this.f);
@@ -73,6 +73,7 @@ public class FileParser {
             }
         }
         dumpPrinter();
+        newTree.mapRoot();
         newTree.writeRoot();
         newTree.read();
     }

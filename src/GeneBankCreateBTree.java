@@ -20,7 +20,7 @@ public class GeneBankCreateBTree {
      * @param args command line arguments being passed in
      * @throws FileNotFoundException exception for files not found
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 
         /**
          * Proper usage for this program:

@@ -8,12 +8,11 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.io.*;
 
-public class BTree {
+public class BTree implements Serializable{
 
     private Node root;
     private final int order; //Degree of the BTree (t)
     private HashMap<Long, Integer> dups;
-    private RandomAccessFile file;
     private File f;
     protected String fileName;
 
@@ -23,7 +22,7 @@ public class BTree {
      *
      * @author Ryan Bailey
      */
-    private class Node{
+    private class Node implements Serializable{
 
         protected int numOfKeys;
         protected long[] key, keyLocations;
@@ -31,6 +30,8 @@ public class BTree {
         protected final Node[] child;
         protected boolean isALeaf;
         private long fileOffset;
+        private HashMap<Long, Integer> dupMap;
+
 
         /**
          *Node constructor
@@ -54,17 +55,14 @@ public class BTree {
         }
 
         void write() throws IOException{
-
-            fileOffset = file.getFilePointer();
-            for(int i = 0; i < numOfKeys; i++) {
-                keyLocations[i] = file.getFilePointer();
-                file.writeLong(key[i]);
-            }
+            FileOutputStream outFile = new FileOutputStream(fileName);
+            BufferedOutputStream buffOut = new BufferedOutputStream(outFile);
+            ObjectOutputStream objOut = new ObjectOutputStream(buffOut);
+            objOut.writeObject(this);
+            objOut.close();
         }
 
-        void read(Node node) throws IOException{
 
-        }
     }
 
     /**
@@ -80,17 +78,31 @@ public class BTree {
         root.isALeaf = true;
         root.numOfKeys = 0;
         dups = new HashMap<>();
-        //writes out contents to specific block on disk
-        file = new RandomAccessFile(fileName, "rw");
-        file.seek(0);
     }
 
     public void writeRoot() throws IOException {
         root.write();
     }
 
-    public void read() throws IOException{
-        file.seek(968);
+    public void read() throws IOException, ClassNotFoundException {
+        FileInputStream fileLoc = new FileInputStream(fileName);
+        BufferedInputStream buffIn = new BufferedInputStream(fileLoc);
+        ObjectInputStream objIn = new ObjectInputStream(buffIn);
+        Node temp = null;
+        while(true) {
+            try {
+                temp = (Node)objIn.readObject();
+            }
+            catch(EOFException e) {
+                break;
+            }
+        }
+        System.out.println("temp: " + temp.dupMap.toString());
+        objIn.close();
+    }
+
+    public void mapRoot() {
+        root.dupMap = dups;
     }
 
     /**
@@ -256,9 +268,9 @@ public class BTree {
     public void printIt()throws FileNotFoundException {
         ArrayList<Long> keyList = new ArrayList<>(dups.keySet());
         Collections.sort(keyList);
-        keyList.retainAll(QueryFilter.makeFilter());
-        for(long key : keyList) {
-            System.out.println(dups.get(key) + " : " + GeneConverter.toString(key));
-        }
+//        keyList.retainAll(QueryFilter.makeFilter());
+//        for(long key : keyList) {
+//            System.out.println(dups.get(key) + " : " + GeneConverter.toString(key));
+//        }
     }
 }
